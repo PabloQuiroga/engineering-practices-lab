@@ -1,0 +1,31 @@
+name: Bash Script Validation
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-hello:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Make script executable
+        run: chmod +x hello.sh
+
+      - name: Run hello script
+        run: ./hello.sh Pablo
+
+      - name: Verify output
+        run: |
+          OUTPUT=$(./hello.sh Pablo)
+          if [[ $OUTPUT == *"Hola Pablo"* ]]; then
+            echo "✅ Test Passed!"
+          else
+            echo "❌ Test Failed!"
+            exit 1
+          fi
